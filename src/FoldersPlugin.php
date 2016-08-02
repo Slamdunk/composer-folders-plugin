@@ -40,9 +40,12 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
 
         foreach ($foldersExtra['create'] as $dir => $mode) {
             $path = $rootDir . DIRECTORY_SEPARATOR . $dir;
-            $this->checkPath($path);
-            $mode = octdec($mode);
 
+            if ($this->skipPath($path)) {
+                continue;
+            }
+
+            $mode = octdec($mode);
             if (! is_dir($path)) {
                 mkdir($path, $mode, true);
             }
@@ -55,7 +58,10 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
 
         foreach ($foldersExtra['clean'] as $dir => $glob) {
             $path = $rootDir . DIRECTORY_SEPARATOR . $dir;
-            $this->checkPath($path);
+
+            if ($this->skipPath($path)) {
+                continue;
+            }
 
             if (strpos($glob, DIRECTORY_SEPARATOR) !== false) {
                 throw new \InvalidArgumentException(sprintf('No relative path allowed in glob: "%s" => "%s"', $dir, $glob));
@@ -69,10 +75,18 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
         }
     }
 
-    private function checkPath($path)
+    private function skipPath($path)
     {
+        if (is_link($path)) {
+            $this->io->write(sprintf('<comment>Symbolic link</comment> untouched: <info>%s</info> -> <info>%s</info>', $path, realpath($path)));
+
+            return true;
+        }
+
         if ($path !== realpath($path)) {
             throw new \InvalidArgumentException(sprintf('No relative path allowed: "%s"', $path));
         }
+
+        return false;
     }
 }
