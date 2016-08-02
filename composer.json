@@ -1,0 +1,24 @@
+{
+    "name": "slam/composer-folders-plugin",
+    "type": "composer-plugin",
+    "description": "Create and clean specified folders",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Filippo Tessarotto",
+            "email": "zoeslam@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Slam\\Composer\\Folders\\": "src/"
+        }
+    },
+    "extra": {
+        "class": "Slam\\Composer\\Folders\\FoldersPlugin"
+    },
+    "require": {
+        "composer-plugin-api": "^1.0"
+    }
+}
