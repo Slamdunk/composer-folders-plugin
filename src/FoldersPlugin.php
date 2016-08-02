@@ -45,6 +45,8 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
                 continue;
             }
 
+            $this->checkPath(dirname($path));
+
             $mode = octdec($mode);
             if (! is_dir($path)) {
                 mkdir($path, $mode, true);
@@ -63,6 +65,7 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
                 continue;
             }
 
+            $this->checkPath($path);
             if (strpos($glob, DIRECTORY_SEPARATOR) !== false) {
                 throw new \InvalidArgumentException(sprintf('No relative path allowed in glob: "%s" => "%s"', $dir, $glob));
             }
@@ -83,10 +86,13 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
             return true;
         }
 
-        if ($path !== realpath($path)) {
-            throw new \InvalidArgumentException(sprintf('No relative path allowed: "%s"', $path));
-        }
-
         return false;
+    }
+
+    private function checkPath($path)
+    {
+        if ($path !== realpath($path)) {
+            throw new \InvalidArgumentException(sprintf('No relative path allowed: "%s" !== "%s"', $path, realpath($path)));
+        }
     }
 }
