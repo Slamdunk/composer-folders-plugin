@@ -1,3 +1,3 @@
 # composer-folders-plugin
 
-Create and clean specified folders"
+Create and clean specified folders
