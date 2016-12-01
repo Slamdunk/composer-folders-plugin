@@ -24,7 +24,6 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
     {
         return array(
             ScriptEvents::POST_INSTALL_CMD => 'createAndCleanFolders',
-            ScriptEvents::POST_UPDATE_CMD => 'createAndCleanFolders',
         );
     }
 
