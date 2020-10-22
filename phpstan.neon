@@ -1,0 +1,26 @@
+includes:
+    - phar://phpstan.phar/conf/config.levelmax.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+    tipsOfTheDay: false
+    paths:
+        - src/
+        - tests/
+    ignoreErrors:
+        -
+            message: "#^Method Slam\\\\Composer\\\\Folders\\\\FoldersPlugin\\:\\:activate\\(\\) has no return typehint specified\\.$#"
+            count: 1
+            path: src/FoldersPlugin.php
+
+        -
+            message: "#^Method Slam\\\\Composer\\\\Folders\\\\FoldersPlugin\\:\\:deactivate\\(\\) has no return typehint specified\\.$#"
+            count: 1
+            path: src/FoldersPlugin.php
+
+        -
+            message: "#^Method Slam\\\\Composer\\\\Folders\\\\FoldersPlugin\\:\\:uninstall\\(\\) has no return typehint specified\\.$#"
+            count: 1
+            path: src/FoldersPlugin.php

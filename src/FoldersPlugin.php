@@ -19,11 +19,14 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             ScriptEvents::POST_INSTALL_CMD => 'createAndCleanFolders',
-        );
+        ];
     }
 
     public function deactivate(Composer $composer, IOInterface $io)
@@ -36,17 +39,19 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
 
     public function createAndCleanFolders(): void
     {
-        $this->io->write('> ' . __METHOD__);
+        $this->io->write('> '.__METHOD__);
 
         clearstatcache();
 
-        $rootDir = dirname(realpath($this->composer->getConfig()->getConfigSource()->getName()));
+        $realpath = realpath($this->composer->getConfig()->getConfigSource()->getName());
+        assert(false !== $realpath);
+        $rootDir = dirname($realpath);
         $extra = $this->composer->getPackage()->getExtra();
         $foldersExtra = $extra['folders-plugin'];
 
         if (isset($foldersExtra['create'])) {
             foreach ($foldersExtra['create'] as $dir => $mode) {
-                $path = $rootDir . DIRECTORY_SEPARATOR . $dir;
+                $path = $rootDir.DIRECTORY_SEPARATOR.$dir;
 
                 if ($this->isLink($path)) {
                     continue;
@@ -55,7 +60,7 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
                 $this->assertPathEqualsRealpath(dirname($path));
 
                 $mode = octdec($mode);
-                if (! is_dir($path)) {
+                if (!is_dir($path)) {
                     mkdir($path, $mode, true);
                 }
                 if (fileowner($path) === posix_getuid()) {
@@ -73,20 +78,20 @@ final class FoldersPlugin implements PluginInterface, EventSubscriberInterface
 
         if (isset($foldersExtra['clean'])) {
             foreach ($foldersExtra['clean'] as $dir => $glob) {
-                $path = $rootDir . DIRECTORY_SEPARATOR . $dir;
+                $path = $rootDir.DIRECTORY_SEPARATOR.$dir;
 
                 if ($this->isLink($path)) {
                     continue;
                 }
 
                 $this->assertPathEqualsRealpath($path);
-                if (strpos($glob, DIRECTORY_SEPARATOR) !== false) {
+                if (false !== strpos($glob, DIRECTORY_SEPARATOR)) {
                     throw new \InvalidArgumentException(sprintf('No relative path allowed in glob: "%s" => "%s"', $dir, $glob));
                 }
 
-                $path .= DIRECTORY_SEPARATOR . $glob;
+                $path .= DIRECTORY_SEPARATOR.$glob;
 
-                shell_exec('rm --force --recursive ' . $path);
+                shell_exec('rm --force --recursive '.$path);
 
                 $this->io->write(sprintf('Cleaned folder <info>./%s</info>', substr($path, strlen($rootDir) + 1)));
             }
