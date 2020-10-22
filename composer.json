@@ -10,15 +10,31 @@
             "role": "Developer"
         }
     ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-posix": "*",
+        "composer-plugin-api": "^2.0"
+    },
+    "require-dev": {
+        "composer/composer": "^2.0.0@dev",
+        "phpstan/phpstan": "^0.12.50",
+        "phpstan/phpstan-deprecation-rules": "^0.12.5",
+        "phpstan/phpstan-phpunit": "^0.12.16",
+        "phpstan/phpstan-strict-rules": "^0.12.5",
+        "phpunit/phpunit": "^9.4.2",
+        "symfony/filesystem": "^5.1.7"
+    },
+    "extra": {
+        "class": "Slam\\Composer\\Folders\\FoldersPlugin"
+    },
     "autoload": {
         "psr-4": {
             "Slam\\Composer\\Folders\\": "src/"
         }
     },
-    "extra": {
-        "class": "Slam\\Composer\\Folders\\FoldersPlugin"
-    },
-    "require": {
-        "composer-plugin-api": "^1.0"
+    "autoload-dev": {
+        "psr-4": {
+            "SlamTest\\Composer\\Folders\\": "tests/"
+        }
     }
 }
