@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - "master"
+  schedule:
+    - cron: '0 3 1-7 * 1'
 
 jobs:
   composer-json-lint:
@@ -26,13 +28,33 @@ jobs:
         with:
           coverage: "none"
           php-version: "${{ matrix.php-version }}"
-          tools: composer-normalize
+          tools: composer-normalize, composer-require-checker, composer-unused
+
+      - name: "Get composer cache directory"
+        id: composercache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: "Cache dependencies"
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composercache.outputs.dir }}
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ matrix.dependencies }}-composer-
+
+      - name: "Install dependencies"
+        run: "composer update --no-interaction --no-progress"
 
       - name: "Validate composer.json"
         run: "composer validate --strict"
 
       - name: "Normalize composer.json"
         run: "composer-normalize --dry-run"
+
+      - name: "Check composer.json explicit dependencies"
+        run: "composer-require-checker check --config-file=$(realpath composer-require-checker.json)"
+
+      - name: "Check composer.json unused dependencies"
+        run: "composer-unused"
 
   tests:
     name: "Tests"
@@ -55,7 +77,6 @@ jobs:
           coverage: "none"
           php-version: "${{ matrix.php-version }}"
           ini-values: zend.assertions=1
-          tools: composer:v2
 
       - name: "Get composer cache directory"
         id: composercache
@@ -94,7 +115,6 @@ jobs:
         with:
           coverage: "pcov"
           php-version: "${{ matrix.php-version }}"
-          tools: composer:v2
           ini-values: zend.assertions=1
 
       - name: "Get composer cache directory"
@@ -167,7 +187,7 @@ jobs:
         with:
           coverage: "none"
           php-version: "${{ matrix.php-version }}"
-          tools: composer:v2, cs2pr
+          tools: cs2pr
 
       - name: "Get composer cache directory"
         id: composercache

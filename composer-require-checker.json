@@ -1,0 +1,12 @@
+{
+  "symbol-whitelist" : [
+    "null", "true", "false",
+    "static", "self", "parent",
+    "array", "string", "int", "float", "bool", "iterable", "callable", "void", "object",
+    "Composer\\Composer",
+    "Composer\\EventDispatcher\\EventSubscriberInterface",
+    "Composer\\IO\\IOInterface",
+    "Composer\\Plugin\\PluginInterface",
+    "Composer\\Script\\ScriptEvents"
+  ]
+}
