@@ -2,7 +2,7 @@
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/slam/composer-folders-plugin.svg)](https://packagist.org/packages/slam/composer-folders-plugin)
 [![Downloads](https://img.shields.io/packagist/dt/slam/composer-folders-plugin.svg)](https://packagist.org/packages/slam/composer-folders-plugin)
-[![Integrate](https://github.com/Slamdunk/composer-folders-plugin/workflows/Integrate/badge.svg?branch=master)](https://github.com/Slamdunk/composer-folders-plugin/actions)
+[![Integrate](https://github.com/Slamdunk/composer-folders-plugin/workflows/CI/badge.svg?branch=master)](https://github.com/Slamdunk/composer-folders-plugin/actions)
 [![Code Coverage](https://codecov.io/gh/Slamdunk/composer-folders-plugin/coverage.svg?branch=master)](https://codecov.io/gh/Slamdunk/composer-folders-plugin?branch=master)
 
 Create and clean specified folders
