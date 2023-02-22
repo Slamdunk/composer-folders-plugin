@@ -1,35 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SlamTest\Composer\Folders;
 
 use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\IOInterface;
+use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slam\Composer\Folders\FoldersPlugin;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @covers \Slam\Composer\Folders\FoldersPlugin
- *
  * @internal
  */
+#[CoversClass(FoldersPlugin::class)]
 final class FoldersPluginTest extends TestCase
 {
     private string $workingDir;
-    /**
-     * @var IOInterface&MockObject
-     */
-    private $io;
+    private MockObject&IOInterface $io;
     private FoldersPlugin $plugin;
 
     protected function setUp(): void
     {
-        $this->workingDir = __DIR__.'/TmpFolder';
+        $this->workingDir = __DIR__ . '/TmpFolder';
         $this->cleanWorkingDir();
 
-        $this->io = $this->createMock(IOInterface::class);
+        $this->io     = $this->createMock(IOInterface::class);
         $this->plugin = new FoldersPlugin();
     }
 
@@ -48,8 +48,8 @@ final class FoldersPluginTest extends TestCase
 
     public function testCreateFolders(): void
     {
-        $randomFolder = uniqid('data_');
-        $this->activatePluginFromJsonString(sprintf(<<<'JSON'
+        $randomFolder = \uniqid('data_');
+        $this->activatePluginFromJsonString(\sprintf(<<<'JSON'
 {
     "extra": {
         "folders-plugin": {
@@ -62,24 +62,24 @@ final class FoldersPluginTest extends TestCase
     }
 }
 JSON
-        , $randomFolder));
+            , $randomFolder));
 
         $this->plugin->createAndCleanFolders();
 
-        self::assertDirectoryExists($this->workingDir.'/data');
-        self::assertDirectoryIsWritable($this->workingDir.'/data');
-        self::assertDirectoryExists($this->workingDir.'/data/'.$randomFolder);
-        self::assertDirectoryIsNotWritable($this->workingDir.'/data/'.$randomFolder);
-        self::assertDirectoryExists($this->workingDir.'/tmp');
+        self::assertDirectoryExists($this->workingDir . '/data');
+        self::assertDirectoryIsWritable($this->workingDir . '/data');
+        self::assertDirectoryExists($this->workingDir . '/data/' . $randomFolder);
+        self::assertDirectoryIsNotWritable($this->workingDir . '/data/' . $randomFolder);
+        self::assertDirectoryExists($this->workingDir . '/tmp');
     }
 
     public function testCleanFolders(): void
     {
-        (new Filesystem())->mkdir($this->workingDir.'/tmp');
-        (new Filesystem())->touch($fileToKeep = $this->workingDir.uniqid('/tmp/to_keep_'));
-        (new Filesystem())->touch($fileToRemove = $this->workingDir.uniqid('/tmp/to_remove_'));
+        (new Filesystem())->mkdir($this->workingDir . '/tmp');
+        (new Filesystem())->touch($fileToKeep = $this->workingDir . \uniqid('/tmp/to_keep_'));
+        (new Filesystem())->touch($fileToRemove = $this->workingDir . \uniqid('/tmp/to_remove_'));
 
-        $this->activatePluginFromJsonString(sprintf(
+        $this->activatePluginFromJsonString(
             <<<'JSON'
 {
     "extra": {
@@ -91,7 +91,7 @@ JSON
     }
 }
 JSON
-        ));
+        );
 
         $this->plugin->createAndCleanFolders();
 
@@ -101,11 +101,11 @@ JSON
 
     public function testSkipLinks(): void
     {
-        (new Filesystem())->mkdir($original = $this->workingDir.'/real');
-        (new Filesystem())->symlink($original, $symlink = $this->workingDir.'/link');
-        (new Filesystem())->touch($fileToKeep = $symlink.uniqid('/to_remove_'));
+        (new Filesystem())->mkdir($original = $this->workingDir . '/real');
+        (new Filesystem())->symlink($original, $symlink = $this->workingDir . '/link');
+        (new Filesystem())->touch($fileToKeep = $symlink . \uniqid('/to_remove_'));
 
-        $this->activatePluginFromJsonString(sprintf(<<<'JSON'
+        $this->activatePluginFromJsonString(\sprintf(<<<'JSON'
 {
     "extra": {
         "folders-plugin": {
@@ -119,7 +119,7 @@ JSON
     }
 }
 JSON
-        , basename($symlink)));
+            , \basename($symlink)));
 
         $this->plugin->createAndCleanFolders();
 
@@ -143,14 +143,14 @@ JSON
 JSON
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->plugin->createAndCleanFolders();
     }
 
     public function testForbidPathsInGlobClean(): void
     {
-        (new Filesystem())->mkdir($this->workingDir.'/tmp');
+        (new Filesystem())->mkdir($this->workingDir . '/tmp');
 
         $this->activatePluginFromJsonString(
             <<<'JSON'
@@ -166,21 +166,21 @@ JSON
 JSON
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->plugin->createAndCleanFolders();
     }
 
     private function cleanWorkingDir(): void
     {
-        $files = glob($this->workingDir.'/*');
+        $files = \glob($this->workingDir . '/*');
         self::assertIsArray($files);
         (new Filesystem())->remove($files);
     }
 
     private function activatePluginFromJsonString(string $json): void
     {
-        $jsonFile = $this->workingDir.'/composer.json';
+        $jsonFile = $this->workingDir . '/composer.json';
         (new Filesystem())->dumpFile($jsonFile, $json);
 
         $composer = (new Factory())->createComposer($this->io, $jsonFile, false, $this->workingDir);
