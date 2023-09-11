@@ -22,9 +22,7 @@ final class FoldersPlugin implements EventSubscriberInterface, PluginInterface
         $this->io       = $io;
     }
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -32,13 +30,9 @@ final class FoldersPlugin implements EventSubscriberInterface, PluginInterface
         ];
     }
 
-    public function deactivate(Composer $composer, IOInterface $io): void
-    {
-    }
+    public function deactivate(Composer $composer, IOInterface $io): void {}
 
-    public function uninstall(Composer $composer, IOInterface $io): void
-    {
-    }
+    public function uninstall(Composer $composer, IOInterface $io): void {}
 
     public function createAndCleanFolders(): void
     {
