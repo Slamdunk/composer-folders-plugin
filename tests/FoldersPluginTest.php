@@ -21,7 +21,7 @@ use Symfony\Component\Filesystem\Filesystem;
 final class FoldersPluginTest extends TestCase
 {
     private string $workingDir;
-    private MockObject&IOInterface $io;
+    private IOInterface&MockObject $io;
     private FoldersPlugin $plugin;
 
     protected function setUp(): void
