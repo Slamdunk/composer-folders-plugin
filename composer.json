@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "composer/composer": "^2.7.7",
-        "phpstan/phpstan": "^1.11.8",
+        "phpstan/phpstan": "^1.11.9",
         "phpstan/phpstan-deprecation-rules": "^1.2.0",
         "phpstan/phpstan-phpunit": "^1.4.0",
         "phpstan/phpstan-strict-rules": "^1.6.0",
