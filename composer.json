@@ -16,7 +16,7 @@
         "composer-plugin-api": "^2.0"
     },
     "require-dev": {
-        "composer/composer": "^2.7.9",
+        "composer/composer": "^2.8.0",
         "phpstan/phpstan": "^1.12.5",
         "phpstan/phpstan-deprecation-rules": "^1.2.1",
         "phpstan/phpstan-phpunit": "^1.4.0",
