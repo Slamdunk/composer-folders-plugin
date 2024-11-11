@@ -1,0 +1,25 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Binary operation "\." between ''/''\|''\\\\'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/FoldersPlugin.php
+
+		-
+			message: '#^Parameter \#1 \$haystack of function str_contains expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/FoldersPlugin.php
+
+		-
+			message: '#^Parameter \#1 \$octal_string of function octdec expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/FoldersPlugin.php
+
+		-
+			message: '#^Parameter \#3 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/FoldersPlugin.php

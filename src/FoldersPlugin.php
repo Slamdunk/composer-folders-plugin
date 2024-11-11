@@ -47,7 +47,7 @@ final class FoldersPlugin implements EventSubscriberInterface, PluginInterface
         $foldersExtra = $extra['folders-plugin'];
         \assert(\is_array($foldersExtra));
 
-        if (isset($foldersExtra['create'])) {
+        if (isset($foldersExtra['create']) && \is_array($foldersExtra['create'])) {
             foreach ($foldersExtra['create'] as $dir => $mode) {
                 $path = $rootDir . \DIRECTORY_SEPARATOR . $dir;
 
@@ -75,7 +75,7 @@ final class FoldersPlugin implements EventSubscriberInterface, PluginInterface
             }
         }
 
-        if (isset($foldersExtra['clean'])) {
+        if (isset($foldersExtra['clean']) && \is_array($foldersExtra['clean'])) {
             foreach ($foldersExtra['clean'] as $dir => $glob) {
                 $path = $rootDir . \DIRECTORY_SEPARATOR . $dir;
 
