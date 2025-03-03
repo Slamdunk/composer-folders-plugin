@@ -90,7 +90,7 @@ final class FoldersPlugin implements EventSubscriberInterface, PluginInterface
 
                 $path .= \DIRECTORY_SEPARATOR . $glob;
 
-                \shell_exec('rm --force --recursive ' . $path);
+                \shell_exec('rm -fr ' . $path);
 
                 $this->io->write(\sprintf('Cleaned folder <info>./%s</info>', \substr($path, \strlen($rootDir) + 1)));
             }
