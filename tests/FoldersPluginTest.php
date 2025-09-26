@@ -61,8 +61,7 @@ final class FoldersPluginTest extends TestCase
         }
     }
 }
-JSON
-            , $randomFolder));
+JSON, $randomFolder));
 
         $this->plugin->createAndCleanFolders();
 
@@ -118,8 +117,7 @@ JSON
         }
     }
 }
-JSON
-            , \basename($symlink)));
+JSON, \basename($symlink)));
 
         $this->plugin->createAndCleanFolders();
 
