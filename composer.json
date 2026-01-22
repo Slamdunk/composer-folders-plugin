@@ -16,10 +16,10 @@
         "composer-plugin-api": "^2.0"
     },
     "require-dev": {
-        "composer/composer": "^2.9.3",
+        "composer/composer": "^2.9.4",
         "phpstan/phpstan": "^2.1.36",
         "phpstan/phpstan-deprecation-rules": "^2.0.3",
-        "phpstan/phpstan-phpunit": "^2.0.11",
+        "phpstan/phpstan-phpunit": "^2.0.12",
         "phpstan/phpstan-strict-rules": "^2.0.7",
         "phpunit/phpunit": "^12.5.6",
         "slam/php-cs-fixer-extensions": "^3.14.0",
