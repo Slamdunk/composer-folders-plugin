@@ -9,7 +9,7 @@ use Composer\Factory;
 use Composer\IO\IOInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Slam\Composer\Folders\FoldersPlugin;
 use Symfony\Component\Filesystem\Filesystem;
@@ -21,7 +21,7 @@ use Symfony\Component\Filesystem\Filesystem;
 final class FoldersPluginTest extends TestCase
 {
     private string $workingDir;
-    private IOInterface&MockObject $io;
+    private IOInterface&Stub $io;
     private FoldersPlugin $plugin;
 
     protected function setUp(): void
@@ -29,7 +29,7 @@ final class FoldersPluginTest extends TestCase
         $this->workingDir = __DIR__ . '/TmpFolder';
         $this->cleanWorkingDir();
 
-        $this->io     = $this->createMock(IOInterface::class);
+        $this->io     = self::createStub(IOInterface::class);
         $this->plugin = new FoldersPlugin();
     }
 
@@ -74,9 +74,9 @@ JSON, $randomFolder));
 
     public function testCleanFolders(): void
     {
-        (new Filesystem())->mkdir($this->workingDir . '/tmp');
-        (new Filesystem())->touch($fileToKeep = $this->workingDir . \uniqid('/tmp/to_keep_'));
-        (new Filesystem())->touch($fileToRemove = $this->workingDir . \uniqid('/tmp/to_remove_'));
+        new Filesystem()->mkdir($this->workingDir . '/tmp');
+        new Filesystem()->touch($fileToKeep = $this->workingDir . \uniqid('/tmp/to_keep_'));
+        new Filesystem()->touch($fileToRemove = $this->workingDir . \uniqid('/tmp/to_remove_'));
 
         $this->activatePluginFromJsonString(
             <<<'JSON'
@@ -100,9 +100,9 @@ JSON
 
     public function testSkipLinks(): void
     {
-        (new Filesystem())->mkdir($original = $this->workingDir . '/real');
-        (new Filesystem())->symlink($original, $symlink = $this->workingDir . '/link');
-        (new Filesystem())->touch($fileToKeep = $symlink . \uniqid('/to_remove_'));
+        new Filesystem()->mkdir($original = $this->workingDir . '/real');
+        new Filesystem()->symlink($original, $symlink = $this->workingDir . '/link');
+        new Filesystem()->touch($fileToKeep = $symlink . \uniqid('/to_remove_'));
 
         $this->activatePluginFromJsonString(\sprintf(<<<'JSON'
 {
@@ -148,7 +148,7 @@ JSON
 
     public function testForbidPathsInGlobClean(): void
     {
-        (new Filesystem())->mkdir($this->workingDir . '/tmp');
+        new Filesystem()->mkdir($this->workingDir . '/tmp');
 
         $this->activatePluginFromJsonString(
             <<<'JSON'
@@ -173,15 +173,15 @@ JSON
     {
         $files = \glob($this->workingDir . '/*');
         self::assertIsArray($files);
-        (new Filesystem())->remove($files);
+        new Filesystem()->remove($files);
     }
 
     private function activatePluginFromJsonString(string $json): void
     {
         $jsonFile = $this->workingDir . '/composer.json';
-        (new Filesystem())->dumpFile($jsonFile, $json);
+        new Filesystem()->dumpFile($jsonFile, $json);
 
-        $composer = (new Factory())->createComposer($this->io, $jsonFile, false, $this->workingDir);
+        $composer = new Factory()->createComposer($this->io, $jsonFile, false, $this->workingDir);
 
         $this->plugin->activate($composer, $this->io);
     }
