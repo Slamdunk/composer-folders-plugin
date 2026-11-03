@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": "~8.4.0 || ~8.5.0",
+        "php": "~8.5.0 || ~8.6.0",
         "ext-posix": "*",
         "composer-plugin-api": "^2.0"
     },
@@ -22,7 +22,7 @@
         "phpstan/phpstan-phpunit": "^2.1.1",
         "phpstan/phpstan-strict-rules": "^2.1.1",
         "phpunit/phpunit": "^13.4.6",
-        "slam/php-cs-fixer-extensions": "^3.15.2",
+        "slam/php-cs-fixer-extensions": "^3.16.0",
         "symfony/filesystem": "^8.1.9"
     },
     "autoload": {
