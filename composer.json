@@ -23,7 +23,7 @@
         "phpstan/phpstan-strict-rules": "^2.1.2",
         "phpunit/phpunit": "^13.4.8",
         "slam/php-cs-fixer-extensions": "^3.16.0",
-        "symfony/filesystem": "^8.1.11"
+        "symfony/filesystem": "^8.1.12"
     },
     "autoload": {
         "psr-4": {
